@@ -6,28 +6,29 @@
 
 <body style="background:black; color:white; text-align:center; margin-top:100px; font-family:Arial;">
 
-    <h1>SITE CALISIYOR 🔥</h1>
-    <p>Egemen ilk GitHub sitesini acti</p>
+    <h1 id="baslik">SITE CALISIYOR 🔥</h1>
+    <p id="yazi">Egemen ilk GitHub sitesini acti</p>
 
     <br><br>
 
-    <button onclick="mesaj1()" 
+    <button onclick="degistir1()" 
         style="padding:15px 30px; font-size:18px; margin:10px; background:red; color:white; border:none; border-radius:10px; cursor:pointer;">
-        Bana Tıkla
+        Yazıyı Değiştir
     </button>
 
-    <button onclick="mesaj2()" 
+    <button onclick="degistir2()" 
         style="padding:15px 30px; font-size:18px; margin:10px; background:blue; color:white; border:none; border-radius:10px; cursor:pointer;">
-        Sürpriz
+        Arka Plan Değiştir
     </button>
 
     <script>
-        function mesaj1() {
-            alert("Helal olsun Egemen 🔥");
+        function degistir1() {
+            document.getElementById("baslik").innerText = "ARTIK PROFESYONEL OLDUN 🚀";
+            document.getElementById("yazi").innerText = "Buton sayfa içeriğini değiştirdi.";
         }
 
-        function mesaj2() {
-            alert("Artık butonlu siten var 🚀");
+        function degistir2() {
+            document.body.style.background = "purple";
         }
     </script>
 
