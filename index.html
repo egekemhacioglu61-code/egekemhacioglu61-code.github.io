@@ -7,7 +7,7 @@
 <title>EgoMotivasyon - Disiplin Kazandırır</title>
 
 <style>
-body {
+body{
   margin:0;
   height:100vh;
   display:flex;
@@ -20,13 +20,13 @@ body {
   color:white;
 }
 
-@keyframes bgMove {
+@keyframes bgMove{
   0%{background-position:0% 50%;}
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
 }
 
-.card {
+.card{
   width:380px;
   background:rgba(255,255,255,0.05);
   backdrop-filter:blur(10px);
@@ -52,9 +52,12 @@ button{
   cursor:pointer;
   background:crimson;
   color:white;
+  transition:0.2s;
 }
 
-button:hover{transform:scale(1.05);}
+button:hover{
+  transform:scale(1.05);
+}
 
 .small{
   font-size:12px;
@@ -68,6 +71,9 @@ button:hover{transform:scale(1.05);}
   overflow:auto;
   font-size:13px;
   text-align:left;
+  background:rgba(255,255,255,0.05);
+  padding:10px;
+  border-radius:10px;
 }
 </style>
 </head>
@@ -76,10 +82,12 @@ button:hover{transform:scale(1.05);}
 
 <div class="card">
   <h1>EgoMotivasyon</h1>
+  <p style="font-size:12px;opacity:0.6;">Disiplin özgürlüktür.</p>
+
   <div>
     <button onclick="changeCategory('disiplin')">Disiplin</button>
     <button onclick="changeCategory('guc')">Güç</button>
-    <button onclick="alphaMode()">ALFA</button>
+    <button onclick="alphaMode()">ALFA MOD</button>
   </div>
 
   <p id="quote"></p>
@@ -95,7 +103,7 @@ button:hover{transform:scale(1.05);}
 </div>
 
 <script>
-const quotes = {
+const quotes={
   disiplin:[
     "Acı geçer sonuç kalır.",
     "Bahane yok.",
@@ -114,6 +122,7 @@ const quotes = {
 };
 
 let currentCategory="disiplin";
+
 let counter=localStorage.getItem("egoCounter")||0;
 document.getElementById("count").innerText=counter;
 
@@ -143,8 +152,12 @@ function alphaMode(){
 function addFavorite(){
   const text=document.getElementById("quote").innerText;
   let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
-  favs.push(text);
-  localStorage.setItem("egoFavs",JSON.stringify(favs));
+
+  if(!favs.includes(text)){
+    favs.push(text);
+    localStorage.setItem("egoFavs",JSON.stringify(favs));
+  }
+
   loadFavorites();
 }
 
@@ -152,6 +165,12 @@ function loadFavorites(){
   let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
   const box=document.getElementById("favorites");
   box.innerHTML="";
+
+  if(favs.length===0){
+    box.innerHTML="Henüz favori yok.";
+    return;
+  }
+
   favs.forEach(f=>{
     box.innerHTML+="• "+f+"<br>";
   });
@@ -160,7 +179,7 @@ function loadFavorites(){
 window.onload=function(){
   newQuote();
   loadFavorites();
-}
+};
 </script>
 
 </body>
