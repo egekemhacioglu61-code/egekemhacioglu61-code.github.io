@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EgoMotivasyon</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  width: 340px;
+}
+
+.tagline {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.categories button {
+  margin: 5px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.main-btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  border-radius: 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background: white;
+  color: #764ba2;
+}
+
+.share-btn {
+  margin-top: 10px;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: #222;
+  color: white;
+}
+
+#quote {
+  font-size: 20px;
+  margin: 20px 0;
+  min-height: 50px;
+  transition: opacity 0.3s ease;
+}
+
+.signature {
+  margin-top: 20px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>EgoMotivasyon</h1>
+  <p class="tagline">Her gün daha güçlü.</p>
+
+  <div class="categories">
+    <button onclick="changeCategory('basari')">Başarı</button>
+    <button onclick="changeCategory('spor')">Spor</button>
+    <button onclick="changeCategory('ask')">Aşk</button>
+  </div>
+
+  <p id="quote"></p>
+
+  <button class="main-btn" onclick="newQuote()">Yeni Söz</button>
+  <button class="share-btn" onclick="shareQuote()">Paylaş</button>
+
+  <p class="signature">Developed by Egemen Kemhacıoğlu</p>
+</div>
+
+<script>
+const quotes = {
+  basari: [
+    "Başarı vazgeçmeyenlerindir.",
+    "Disiplin özgürlüktür.",
+    "Zor günler güçlü insanlar yaratır."
+  ],
+  spor: [
+    "Ter başarının anahtarıdır.",
+    "Bugün zor, yarın güçlü.",
+    "Pes etmek yok."
+  ],
+  ask: [
+    "Sevgi en büyük güçtür.",
+    "Kalbinle yaşa.",
+    "Aşk cesaret ister."
+  ]
+};
+
+let currentCategory = "basari";
+
+function randomQuote() {
+  const list = quotes[currentCategory];
+  const random = Math.floor(Math.random() * list.length);
+  return list[random];
+}
+
+function newQuote() {
+  const quoteElement = document.getElementById("quote");
+  quoteElement.style.opacity = 0;
+
+  setTimeout(() => {
+    quoteElement.innerText = randomQuote();
+    quoteElement.style.opacity = 1;
+  }, 200);
+}
+
+function changeCategory(category) {
+  currentCategory = category;
+  newQuote();
+}
+
+function shareQuote() {
+  const text = document.getElementById("quote").innerText;
+  navigator.clipboard.writeText(text + " - EgoMotivasyon");
+  alert("Söz kopyalandı! İstediğin yerde paylaşabilirsin.");
+}
+
+window.onload = function() {
+  newQuote();
+};
+</script>
+
+</body>
+</html>
