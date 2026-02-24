@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EgoMotivasyon - Disiplin Kazandırır</title>
+<title>EgoMotivasyon V4</title>
 
 <style>
 body{
@@ -15,7 +14,7 @@ body{
   align-items:center;
   background:linear-gradient(-45deg,#000,#1a1a1a,#111,#000);
   background-size:400% 400%;
-  animation:bgMove 10s ease infinite;
+  animation:bgMove 12s ease infinite;
   font-family:Arial;
   color:white;
 }
@@ -27,21 +26,13 @@ body{
 }
 
 .card{
-  width:380px;
+  width:400px;
   background:rgba(255,255,255,0.05);
   backdrop-filter:blur(10px);
   padding:40px;
   border-radius:20px;
   text-align:center;
-  box-shadow:0 0 40px rgba(255,0,0,0.2);
-}
-
-h1{margin-bottom:5px;}
-
-#quote{
-  font-size:22px;
-  margin:20px 0;
-  min-height:70px;
+  box-shadow:0 0 50px rgba(255,0,0,0.25);
 }
 
 button{
@@ -55,15 +46,15 @@ button{
   transition:0.2s;
 }
 
-button:hover{
-  transform:scale(1.05);
+button:hover{ transform:scale(1.05); }
+
+#quote{
+  font-size:22px;
+  margin:20px 0;
+  min-height:70px;
 }
 
-.small{
-  font-size:12px;
-  opacity:0.6;
-  margin-top:10px;
-}
+.small{ font-size:12px; opacity:0.6; margin-top:10px; }
 
 .favList{
   margin-top:15px;
@@ -81,44 +72,45 @@ button:hover{
 <body>
 
 <div class="card">
-  <h1>EgoMotivasyon</h1>
-  <p style="font-size:12px;opacity:0.6;">Disiplin özgürlüktür.</p>
+<h1>EgoMotivasyon</h1>
+<p style="font-size:12px;opacity:0.6;">Disiplin özgürlüktür.</p>
 
-  <div>
-    <button onclick="changeCategory('disiplin')">Disiplin</button>
-    <button onclick="changeCategory('guc')">Güç</button>
-    <button onclick="alphaMode()">ALFA MOD</button>
-  </div>
+<div>
+<button onclick="changeCategory('disiplin')">Disiplin</button>
+<button onclick="changeCategory('guc')">Güç</button>
+<button onclick="premiumMode()">👑 Premium</button>
+</div>
 
-  <p id="quote"></p>
+<p id="quote"></p>
 
-  <button onclick="newQuote()">Yeni Söz</button>
-  <button onclick="addFavorite()">❤️ Favori</button>
+<button onclick="newQuote()">Yeni Söz</button>
+<button onclick="addFavorite()">❤️ Favori</button>
 
-  <div class="small">
-    Görülen: <span id="count">0</span>
-  </div>
+<div class="small">
+Görülen: <span id="count">0</span>
+</div>
 
-  <div class="favList" id="favorites"></div>
+<div class="favList" id="favorites"></div>
+
 </div>
 
 <script>
 const quotes={
-  disiplin:[
-    "Acı geçer sonuç kalır.",
-    "Bahane yok.",
-    "Konfor seni öldürür."
-  ],
-  guc:[
-    "Saygı kazanılır.",
-    "Zayıflık bir seçimdir.",
-    "Ya lider olursun ya izlersin."
-  ],
-  alfa:[
-    "Kimse seni kurtarmayacak.",
-    "Erkek sonuç üretir.",
-    "Şikayet eden kaybeder."
-  ]
+disiplin:[
+"Acı geçer sonuç kalır.",
+"Bahane yok.",
+"Konfor seni öldürür."
+],
+guc:[
+"Saygı kazanılır.",
+"Zayıflık bir seçimdir.",
+"Ya lider olursun ya izlersin."
+],
+premium:[
+"Zirve yalnızdır.",
+"Herkes ister, azı başarır.",
+"Disiplin = güç x süre."
+]
 };
 
 let currentCategory="disiplin";
@@ -127,58 +119,63 @@ let counter=localStorage.getItem("egoCounter")||0;
 document.getElementById("count").innerText=counter;
 
 function randomQuote(){
-  const list=quotes[currentCategory];
-  return list[Math.floor(Math.random()*list.length)];
+const list=quotes[currentCategory];
+return list[Math.floor(Math.random()*list.length)];
 }
 
 function newQuote(){
-  const q=randomQuote();
-  document.getElementById("quote").innerText=q;
-  counter++;
-  localStorage.setItem("egoCounter",counter);
-  document.getElementById("count").innerText=counter;
+const q=randomQuote();
+document.getElementById("quote").innerText=q;
+counter++;
+localStorage.setItem("egoCounter",counter);
+document.getElementById("count").innerText=counter;
 }
 
 function changeCategory(cat){
-  currentCategory=cat;
-  newQuote();
+currentCategory=cat;
+newQuote();
 }
 
-function alphaMode(){
-  currentCategory="alfa";
-  newQuote();
+function premiumMode(){
+alert("Premium özellik yakında aktif olacak 👑");
 }
 
 function addFavorite(){
-  const text=document.getElementById("quote").innerText;
-  let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
+const text=document.getElementById("quote").innerText;
+let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
 
-  if(!favs.includes(text)){
-    favs.push(text);
-    localStorage.setItem("egoFavs",JSON.stringify(favs));
-  }
+if(!favs.includes(text)){
+favs.push(text);
+localStorage.setItem("egoFavs",JSON.stringify(favs));
+}
+loadFavorites();
+}
 
-  loadFavorites();
+function removeFavorite(text){
+let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
+favs=favs.filter(f=>f!==text);
+localStorage.setItem("egoFavs",JSON.stringify(favs));
+loadFavorites();
 }
 
 function loadFavorites(){
-  let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
-  const box=document.getElementById("favorites");
-  box.innerHTML="";
+let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
+const box=document.getElementById("favorites");
+box.innerHTML="";
 
-  if(favs.length===0){
-    box.innerHTML="Henüz favori yok.";
-    return;
-  }
+if(favs.length===0){
+box.innerHTML="Henüz favori yok.";
+return;
+}
 
-  favs.forEach(f=>{
-    box.innerHTML+="• "+f+"<br>";
-  });
+favs.forEach(f=>{
+box.innerHTML+=`• ${f} <button onclick="removeFavorite('${f}')">X</button><br>`;
+});
 }
 
 window.onload=function(){
-  newQuote();
-  loadFavorites();
+newQuote();
+loadFavorites();
 };
 </script>
 
