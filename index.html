@@ -12,9 +12,17 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #000000, #1a1a1a);
+  background: linear-gradient(-45deg, #000000, #1a1a1a, #111111, #000000);
+  background-size: 400% 400%;
+  animation: bgMove 10s ease infinite;
   font-family: Arial, sans-serif;
   color: white;
+}
+
+@keyframes bgMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
 .card {
@@ -24,25 +32,21 @@ body {
   border-radius: 20px;
   text-align: center;
   width: 380px;
-  box-shadow: 0 0 30px rgba(255,0,0,0.2);
+  box-shadow: 0 0 40px rgba(255,0,0,0.2);
 }
 
-h1 {
-  margin-bottom: 5px;
-  letter-spacing: 2px;
-}
+h1 { margin-bottom: 5px; }
 
 .tagline {
   font-size: 13px;
   opacity: 0.6;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 #quote {
   font-size: 22px;
-  margin: 25px 0;
+  margin: 20px 0;
   min-height: 70px;
-  transition: opacity 0.3s ease;
 }
 
 button {
@@ -58,18 +62,17 @@ button {
 }
 
 button:hover {
-  background: red;
   transform: scale(1.05);
 }
 
 .counter {
-  margin-top: 15px;
+  margin-top: 10px;
   font-size: 13px;
   opacity: 0.7;
 }
 
 .signature {
-  margin-top: 20px;
+  margin-top: 15px;
   font-size: 11px;
   opacity: 0.4;
 }
@@ -86,11 +89,13 @@ button:hover {
     <button onclick="changeCategory('disiplin')">Disiplin</button>
     <button onclick="changeCategory('basari')">Başarı</button>
     <button onclick="changeCategory('guc')">Güç</button>
+    <button onclick="alphaMode()">ALFA MOD</button>
   </div>
 
   <p id="quote"></p>
 
   <button onclick="newQuote()">Yeni Söz</button>
+  <button onclick="shareQuote()">Instagram Paylaş</button>
 
   <div class="counter">
     Görülen söz sayısı: <span id="count">0</span>
@@ -103,26 +108,30 @@ button:hover {
 const quotes = {
   disiplin: [
     "Disiplinin yoksa hayalin de yok.",
-    "Bahane üreten kaybeder.",
     "Acı geçer, sonuç kalır.",
-    "Konfor alanı mezarlık gibidir."
+    "Bahane üreten kaybeder."
   ],
   basari: [
     "Kazananlar erken kalkar.",
-    "Yorgunluk zayıflara özeldir.",
     "Kimse seni kurtarmayacak.",
     "İstiyorsan çalışacaksın."
   ],
   guc: [
-    "Zayıf olmak bir seçimdir.",
-    "Güçlü adam sessizdir.",
     "Saygı talep edilmez, kazanılır.",
-    "Ya lider olursun ya izlersin."
+    "Ya lider olursun ya izlersin.",
+    "Zayıf olmak bir seçimdir."
+  ],
+  alfa: [
+    "Konfor zayıfların sığınağıdır.",
+    "Şikayet eden kaybeder.",
+    "Gerçek erkek sonuç üretir."
   ]
 };
 
 let currentCategory = "disiplin";
-let counter = 0;
+
+let counter = localStorage.getItem("egoCounter") || 0;
+document.getElementById("count").innerText = counter;
 
 function randomQuote() {
   const list = quotes[currentCategory];
@@ -131,21 +140,28 @@ function randomQuote() {
 }
 
 function newQuote() {
-  const quoteElement = document.getElementById("quote");
-  quoteElement.style.opacity = 0;
-
-  setTimeout(() => {
-    quoteElement.innerText = randomQuote();
-    quoteElement.style.opacity = 1;
-  }, 200);
+  const quote = randomQuote();
+  document.getElementById("quote").innerText = quote;
 
   counter++;
+  localStorage.setItem("egoCounter", counter);
   document.getElementById("count").innerText = counter;
 }
 
 function changeCategory(category) {
   currentCategory = category;
   newQuote();
+}
+
+function alphaMode() {
+  currentCategory = "alfa";
+  newQuote();
+}
+
+function shareQuote() {
+  const text = document.getElementById("quote").innerText;
+  navigator.clipboard.writeText(text + " - EgoMotivasyon");
+  alert("Söz kopyalandı. Instagram’da yapıştırabilirsin.");
 }
 
 window.onload = function() {
