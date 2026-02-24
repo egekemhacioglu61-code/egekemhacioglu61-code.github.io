@@ -1,37 +1,157 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Egemen Site</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EgoMotivasyon - Disiplin Kazandırır</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #000000, #1a1a1a);
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  width: 380px;
+  box-shadow: 0 0 30px rgba(255,0,0,0.2);
+}
+
+h1 {
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+}
+
+.tagline {
+  font-size: 13px;
+  opacity: 0.6;
+  margin-bottom: 25px;
+}
+
+#quote {
+  font-size: 22px;
+  margin: 25px 0;
+  min-height: 70px;
+  transition: opacity 0.3s ease;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  background: crimson;
+  color: white;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: red;
+  transform: scale(1.05);
+}
+
+.counter {
+  margin-top: 15px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.signature {
+  margin-top: 20px;
+  font-size: 11px;
+  opacity: 0.4;
+}
+</style>
 </head>
 
-<body style="background:black; color:white; text-align:center; margin-top:100px; font-family:Arial;">
+<body>
 
-    <h1 id="baslik">SITE CALISIYOR 🔥</h1>
-    <p id="yazi">Egemen ilk GitHub sitesini acti</p>
+<div class="card">
+  <h1>EgoMotivasyon</h1>
+  <p class="tagline">Disiplin özgürlüktür.</p>
 
-    <br><br>
+  <div>
+    <button onclick="changeCategory('disiplin')">Disiplin</button>
+    <button onclick="changeCategory('basari')">Başarı</button>
+    <button onclick="changeCategory('guc')">Güç</button>
+  </div>
 
-    <button onclick="degistir1()" 
-        style="padding:15px 30px; font-size:18px; margin:10px; background:red; color:white; border:none; border-radius:10px; cursor:pointer;">
-        Yazıyı Değiştir
-    </button>
+  <p id="quote"></p>
 
-    <button onclick="degistir2()" 
-        style="padding:15px 30px; font-size:18px; margin:10px; background:blue; color:white; border:none; border-radius:10px; cursor:pointer;">
-        Arka Plan Değiştir
-    </button>
+  <button onclick="newQuote()">Yeni Söz</button>
 
-    <script>
-        function degistir1() {
-            document.getElementById("baslik").innerText = "ARTIK PROFESYONEL OLDUN 🚀";
-            document.getElementById("yazi").innerText = "Buton sayfa içeriğini değiştirdi.";
-        }
+  <div class="counter">
+    Görülen söz sayısı: <span id="count">0</span>
+  </div>
 
-        function degistir2() {
-            document.body.style.background = "purple";
-        }
-    </script>
+  <p class="signature">Developed by Egemen</p>
+</div>
+
+<script>
+const quotes = {
+  disiplin: [
+    "Disiplinin yoksa hayalin de yok.",
+    "Bahane üreten kaybeder.",
+    "Acı geçer, sonuç kalır.",
+    "Konfor alanı mezarlık gibidir."
+  ],
+  basari: [
+    "Kazananlar erken kalkar.",
+    "Yorgunluk zayıflara özeldir.",
+    "Kimse seni kurtarmayacak.",
+    "İstiyorsan çalışacaksın."
+  ],
+  guc: [
+    "Zayıf olmak bir seçimdir.",
+    "Güçlü adam sessizdir.",
+    "Saygı talep edilmez, kazanılır.",
+    "Ya lider olursun ya izlersin."
+  ]
+};
+
+let currentCategory = "disiplin";
+let counter = 0;
+
+function randomQuote() {
+  const list = quotes[currentCategory];
+  const random = Math.floor(Math.random() * list.length);
+  return list[random];
+}
+
+function newQuote() {
+  const quoteElement = document.getElementById("quote");
+  quoteElement.style.opacity = 0;
+
+  setTimeout(() => {
+    quoteElement.innerText = randomQuote();
+    quoteElement.style.opacity = 1;
+  }, 200);
+
+  counter++;
+  document.getElementById("count").innerText = counter;
+}
+
+function changeCategory(category) {
+  currentCategory = category;
+  newQuote();
+}
+
+window.onload = function() {
+  newQuote();
+};
+</script>
 
 </body>
 </html>
