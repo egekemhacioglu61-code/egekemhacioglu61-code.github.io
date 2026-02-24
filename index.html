@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EgoMotivasyon V4</title>
+<title>EgoMotivasyon V5</title>
 
 <style>
 body{
@@ -66,6 +66,11 @@ button:hover{ transform:scale(1.05); }
   padding:10px;
   border-radius:10px;
 }
+
+.premiumActive{
+  background:gold !important;
+  color:black !important;
+}
 </style>
 </head>
 
@@ -78,7 +83,7 @@ button:hover{ transform:scale(1.05); }
 <div>
 <button onclick="changeCategory('disiplin')">Disiplin</button>
 <button onclick="changeCategory('guc')">Güç</button>
-<button onclick="premiumMode()">👑 Premium</button>
+<button id="premiumBtn" onclick="premiumMode()">👑 Premium</button>
 </div>
 
 <p id="quote"></p>
@@ -95,6 +100,7 @@ Görülen: <span id="count">0</span>
 </div>
 
 <script>
+
 const quotes={
 disiplin:[
 "Acı geçer sonuç kalır.",
@@ -109,7 +115,8 @@ guc:[
 premium:[
 "Zirve yalnızdır.",
 "Herkes ister, azı başarır.",
-"Disiplin = güç x süre."
+"Disiplin = güç x süre.",
+"Ortalama insanlar sıradan ölür."
 ]
 };
 
@@ -118,12 +125,20 @@ let currentCategory="disiplin";
 let counter=localStorage.getItem("egoCounter")||0;
 document.getElementById("count").innerText=counter;
 
+let isPremium=localStorage.getItem("egoPremium")==="true";
+updatePremiumUI();
+
 function randomQuote(){
 const list=quotes[currentCategory];
 return list[Math.floor(Math.random()*list.length)];
 }
 
 function newQuote(){
+if(currentCategory==="premium" && !isPremium){
+alert("Premium kilitli 👑");
+return;
+}
+
 const q=randomQuote();
 document.getElementById("quote").innerText=q;
 counter++;
@@ -137,11 +152,31 @@ newQuote();
 }
 
 function premiumMode(){
-alert("Premium özellik yakında aktif olacak 👑");
+if(isPremium){
+alert("Premium zaten aktif 👑");
+return;
+}
+
+if(confirm("Premium'u 29₺ karşılığında aktif etmek ister misin? (Demo)")){
+isPremium=true;
+localStorage.setItem("egoPremium","true");
+updatePremiumUI();
+alert("Premium aktif 👑");
+}
+}
+
+function updatePremiumUI(){
+const btn=document.getElementById("premiumBtn");
+if(isPremium){
+btn.classList.add("premiumActive");
+btn.innerText="👑 Premium Aktif";
+}
 }
 
 function addFavorite(){
 const text=document.getElementById("quote").innerText;
+if(!text) return;
+
 let favs=JSON.parse(localStorage.getItem("egoFavs"))||[];
 
 if(!favs.includes(text)){
@@ -177,6 +212,7 @@ window.onload=function(){
 newQuote();
 loadFavorites();
 };
+
 </script>
 
 </body>
